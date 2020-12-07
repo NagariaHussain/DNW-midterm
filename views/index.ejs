@@ -1,30 +1,15 @@
+<!-- <a href="https://icons8.com/icon/dj1fRgpBOEt4/healthy-food-calories-calculator">Healthy Food Calories Calculator icon by Icons8</a> -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
-    <title>CalorieBuddy - Home</title>
-</head>
+<%- include('head', {title: "Home"}); -%>
 <body>
-    <div class="Header">
-        <a href="/" class="Header-link f4 d-flex flex-items-center">
-            <img class="mr-2" width="32" height="32" src="https://img.icons8.com/fluent/48/000000/healthy-food-calories-calculator.png"/>
-            <span>CalorieBuddy</span>
-        </a>
-        <div class="Header-item ml-6">
-            <a href="#" class="Header-link">List all Foods</a>
-        </div>
-        <div class="Header-item">
-            <a href="#" class="Header-link">About</a>
-        </div>
-        <div class="Header-item">
-            <a href="#" class="Header-link">Add</a>
-        </div>
-        <div class="Header-item">
-            <a href="#" class="Header-link">Search</a>
-        </div>
+    <%- include('header'); -%>
+    <div class="blankslate blankslate-large">
+        <img src="https://img.icons8.com/color/96/000000/lunchbox.png" alt="" class="mb-3" />
+        <h3 class="mb-1">Let's help you create your diet</h3>
+        <p>You can create a new food item by clicking the button below.</p>
+        <a class="btn btn-primary my-3" type="button" href="/add">Add food item</a>
     </div>
-    <h1 class="p-5">This will be the home page soon!</h1>
 </body>
 </html>

@@ -5,6 +5,18 @@ module.exports = function(app) {
         res.render("index");
     });
 
+    app.get('/add', (req, res) => {
+        res.render("add_food");
+    });
+
+    app.get('/search', (req, res) => {
+        res.render("search");
+    });
+
+    app.get('/about', (req, res) => {
+        res.render("about");
+    });
+
 
     // Catch all route for 404 page
     app.get('*', (req, res) => {
