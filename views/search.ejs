@@ -3,11 +3,40 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('head', {title: "Search Food"}); -%>
+    <style>
+        .search-form {
+            display: grid;
+            grid-template-columns: 9fr, 1fr;
+        }
+
+        .search-box {
+            display: inline-block;
+            width: 70%;
+            grid-column: 1 / 2;
+        }
+
+        .autocomplete-results {
+            width: 67%;
+            display: none;
+        }
+
+    </style>
     <body>
         <%- include('header'); -%>
         <div class="Subhead m-5">
             <div class="Subhead-heading">Search for food items</div>
             <div class="Subhead-description">Enter the name of food item to start searching.</div>
         </div>
+        <form class="search-form">
+            <div class="p-5">
+                <input class="form-control search-box" type="text" aria-label="Search" placeholder="Enter food name to search in database">
+                <ul class="autocomplete-results">
+                  <li class="autocomplete-item" aria-selected="true">Food 1</li>
+                  <li class="autocomplete-item">Food 2</li>
+                  <li class="autocomplete-item">Food 3</li>
+                </ul>
+                <input class="btn ml-2" type="submit" value="Search">
+            </div>
+        </form>
     </body>
 </html>
