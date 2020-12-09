@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('head', {title: "All foods"}); -%>
+    <style>
+        tbody tr:hover {
+            background-color: aquamarine !important;
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: aquamarine !important;
+        }
+    </style>
     <body>
         <%- include('header'); -%>
         <div class="Subhead m-5">
             <div class="Subhead-heading">All Food items in our database</div>
             <div class="Subhead-description">Select items to calculate calories</div>
         </div>
-        <div class="markdown-body py-1 px-5">
+        <div class="markdown-body py-1 px-5" id="list-table">
+            <div>
+                <p>Selected foods for calculation: <span class="Counter ml-1">{{selected.length}}</span>
+                </p>
+            </div>
+              
             <table>
                 <thead>
                     <tr>
@@ -23,7 +38,7 @@
                 </thead>
                 <tbody>
                     <% foods.forEach(function(food){ %>
-                    <tr>
+                    <tr @click="addToList">
                       <td><%= food.name %></td>
                       <td><%= food.typical_values_per %> <%= food.unit_of_tvp %></td>
                       <td><%= food.calories %></td>
@@ -37,5 +52,36 @@
                 </tbody>
             </table>
         </div>
+        <!-- VueJS 3 JavaScript Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js" integrity="sha512-M8VjsuCj1iBzrwKloFNjvQBmFXT2oF0MWExoLGpQT2nEx5tq7CP+BhWGJdczT1LoWAhyqHh+LJ6ihHSVGyclHw==" crossorigin="anonymous"></script>
+        <script>  
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        selected: []
+                    }
+                },
+                methods: {
+                    addToList(e) {
+                        const foodName = e.target.parentNode.children[0].innerText;
+                        if(!this.selected.includes(foodName)) {
+                            this.selected.push(
+                                foodName
+                            );
+                            e.target.parentNode.classList.add("selected");
+                        } else {
+                            for(let i = 0; i < this.selected.length; i++) {    
+                                if ( this.selected[i] === foodName) { 
+                                    this.selected.splice(i, 1); 
+                                }
+                            }
+                            e.target.parentNode.classList.remove("selected");
+                        }
+                    }
+                }
+            });
+
+            const mountedApp = app.mount('#list-table');
+        </script>
     </body>
 </html>
