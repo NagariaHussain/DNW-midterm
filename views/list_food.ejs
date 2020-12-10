@@ -19,8 +19,18 @@
         </div>
         <div class="markdown-body py-1 px-5" id="list-table">
             <div>
-                <p>Selected foods for calculation: <span class="Counter ml-1">{{selected.length}}</span>
+                <p>
+                    Selected foods for calculation: 
+                    <span class="Counter ml-1">
+                        {{selected.length}}
+                    </span>
                 </p>
+                <ul>
+                    <li v-for="food of selected">
+                        {{food}} 
+                        <input type="number" class="form-control" :id="food" value="1">
+                    </li>
+                </ul>
             </div>
               
             <table>
@@ -78,6 +88,9 @@
                             e.target.parentNode.classList.remove("selected");
                         }
                     }
+                }, 
+                qtyChange(e) {
+                    console.log("qty changed!")
                 }
             });
 
