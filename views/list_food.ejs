@@ -17,22 +17,7 @@
             <div class="Subhead-heading">All Food items in our database</div>
             <div class="Subhead-description">Select items to calculate calories</div>
         </div>
-        <div class="markdown-body py-1 px-5" id="list-table">
-            <div>
-                <p>
-                    Selected foods for calculation: 
-                    <span class="Counter ml-1">
-                        {{selected.length}}
-                    </span>
-                </p>
-                <ul>
-                    <li v-for="food of selected">
-                        {{food}} 
-                        <input type="number" class="form-control" :id="food" value="1">
-                    </li>
-                </ul>
-            </div>
-              
+        <div class="markdown-body py-1 px-5" id="list-table">          
             <table>
                 <thead>
                     <tr>
@@ -61,6 +46,21 @@
                     <% }); %>
                 </tbody>
             </table>
+
+            <div class="mt-3">
+                <p>
+                    Selected foods for calculation: 
+                    <span class="Counter ml-1">
+                        {{selected.length}}
+                    </span>
+                </p>
+                <ul>
+                    <li v-for="food of selected">
+                        {{food}} 
+                        <input type="number" class="form-control" :id="food" value="1">
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- VueJS 3 JavaScript Library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js" integrity="sha512-M8VjsuCj1iBzrwKloFNjvQBmFXT2oF0MWExoLGpQT2nEx5tq7CP+BhWGJdczT1LoWAhyqHh+LJ6ihHSVGyclHw==" crossorigin="anonymous"></script>
