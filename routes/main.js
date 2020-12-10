@@ -76,7 +76,8 @@ module.exports = function(app) {
 
 
     // Catch all route for 404 page
+    // 404 page by: https://codepen.io/Tibixx/pen/GRKmppz
     app.get('*', (req, res) => {
-        return res.status(404).send("404 page goes here!");
+        return res.status(404).render("404");
     });
 };
