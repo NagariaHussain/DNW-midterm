@@ -8,7 +8,7 @@
         }
 
         .selected {
-            background-color: aquamarine !important;
+            background-color: rgb(0, 206, 137) !important;
         }
     </style>
     <body>
@@ -31,9 +31,9 @@
                       <th>Sugar</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="foodTable">
                     <% foods.forEach(function(food){ %>
-                    <tr @click="addToList">
+                    <tr @click="addToList" >
                       <td><%= food.name %></td>
                       <td><%= food.typical_values_per %> <%= food.unit_of_tvp %></td>
                       <td><%= food.calories %></td>
@@ -53,13 +53,24 @@
                     <span class="Counter ml-1">
                         {{selected.length}}
                     </span>
+                    <button class="ml-2 btn" @click="clearList">Clear</button>
                 </p>
-                <ul>
-                    <li v-for="food of selected">
-                        {{food}} 
-                        <input type="number" class="form-control" :id="food" value="1">
-                    </li>
-                </ul>
+                <table v-if="selected.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Food</th>
+                            <th>Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="food of selected">
+                            <td> {{food}} </td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control" :id="food" value="1" @change="qtyChange">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- VueJS 3 JavaScript Library -->
@@ -87,10 +98,16 @@
                             }
                             e.target.parentNode.classList.remove("selected");
                         }
+                    }, 
+                    qtyChange(e) {
+                        console.log("qty changed!");
+                    },
+                    clearList() {
+                        this.selected.length = 0;
+                        for (let child of document.getElementById("foodTable").children) {
+                            child.classList.remove("selected");
+                        }
                     }
-                }, 
-                qtyChange(e) {
-                    console.log("qty changed!")
                 }
             });
 
