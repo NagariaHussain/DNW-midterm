@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head', {title: "Search results"}); -%>
+<body>
+    <%- include('header'); -%>
+    <div class="Subhead m-5">
+        <div class="Subhead-heading">Showing results for "<%= queryString %>"</div>
+        <div class="Subhead-description"><%= foods.length %> matches found</div>
+    </div>
+    <div class="markdown-body py-1 px-5">  
+        <% if(foods.length > 0) {%>
+        <table>
+            <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Typical Values Per</th>
+                  <th>Calories</th>
+                  <th>Carbs</th>
+                  <th>Fats</th>
+                  <th>Proteins</th>
+                  <th>Salt</th>
+                  <th>Sugar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% foods.forEach(function(food){ %>
+                <tr>
+                  <td><%= food.name %></td>
+                  <td><%= food.typical_values_per %> <%= food.unit_of_tvp %></td>
+                  <td><%= food.calories %></td>
+                  <td><%= food.carbs %></td>
+                  <td><%= food.fats %></td>
+                  <td><%= food.proteins %></td>
+                  <td><%= food.salt %></td>
+                  <td><%= food.sugar %></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+            <h1>No results found</h1>
+        <% } %>
+    </div>
+</body>
+</html>

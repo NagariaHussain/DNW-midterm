@@ -50,6 +50,24 @@ module.exports = function(app) {
         return res.render("search");
     });
 
+    app.get('/search_db', (req, res) => {
+        // SQL command to select all columns for rows 
+        // whose name column matches the given search keyword
+        const sql_command = "SELECT * FROM foods WHERE REGEXP_LIKE(name, ?, 'i')";
+
+        // Search keyword/name
+        const key = req.query.keyword;
+        db.query(sql_command, [key], (err, results) => {
+            if (err) {
+                res.status(500).send("Something went wrong.");
+            }
+            
+            
+            return res.render("results", {queryString: key, foods: results})
+        });
+       
+    });
+
     app.get('/about', (req, res) => {
         return res.render("about");
     });

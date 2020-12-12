@@ -27,9 +27,9 @@
             <div class="Subhead-heading">Search for food items</div>
             <div class="Subhead-description">Enter the name of food item to start searching.</div>
         </div>
-        <form class="search-form">
+        <form class="search-form" method="GET" action="/search_db">
             <div class="p-5">
-                <input class="form-control search-box" type="text" aria-label="Search" placeholder="Enter food name to search in database">
+                <input name="keyword" class="form-control search-box" type="text" aria-label="Search" placeholder="Enter food name to search in database">
                 <ul class="autocomplete-results">
                   <li class="autocomplete-item" aria-selected="true">Food 1</li>
                   <li class="autocomplete-item">Food 2</li>
