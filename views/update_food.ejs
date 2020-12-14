@@ -2,21 +2,21 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('head', {title: "Add Food"}); -%>
+    <%- include('head', {title: "Update Food"}); -%>
     <body>
         <%- include('header'); -%>
         <div class="Subhead m-5">
-            <div class="Subhead-heading">Add new food item</div>
-            <div class="Subhead-description">Fill out the form to add food to database</div>
+            <div class="Subhead-heading">Update "<%= food.name %>"</div>
+            <div class="Subhead-description">Modify the required fields and save</div>
         </div>
 
-        <form class="px-5" action="/add" method="POST">
+        <form class="px-5" action="/update/<%= food.name %>" method="POST">
             <div class="form-group">
               <div class="form-group-header">
                 <label for="food_name">Food name</label>
               </div>
               <div class="form-group-body">
-                <input class="form-control" name="food_name" type="text" id="food_name" placeholder="e.g. flour, bread, ..."/>
+                <input class="form-control" name="food_name" type="text" value="<%= food.name %>" id="food_name" placeholder="e.g. flour, bread, ..."/>
               </div>
             </div>
 
@@ -25,7 +25,7 @@
                   <label for="typical_value">Typical Values Per</label>
                 </div>
                 <div class="form-group-body">
-                  <input class="form-control" step="0.01" name="typical_value" type="number" id="typical_value" placeholder="e.g. 100, 200, ..." />
+                  <input class="form-control" value="<%= food.typical_values_per %>" step="0.01" name="typical_value" type="number" id="typical_value" placeholder="e.g. 100, 200, ..." />
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                   <label for="typical_value_unit">Unit of the above typical value</label>
                 </div>
                 <div class="form-group-body">
-                  <input class="form-control" name="typical_value_unit" type="text" id="typical_value_unit" placeholder="e.g. gram, milligram,..." />
+                  <input class="form-control" value="<%= food.unit_of_tvp %>" name="typical_value_unit" type="text" id="typical_value_unit" placeholder="e.g. gram, milligram,..." />
                 </div>
             </div>
 
@@ -42,28 +42,28 @@
                 <label for="calories">Calories</label>
             </div>
             <div class="form-group-body">
-                <input class="form-control" step="0.01" name="calories" type="number" id="calories" />
+                <input class="form-control" value="<%= food.calories %>" step="0.01" name="calories" type="number" id="calories" />
             </div>
 
             <div class="form-group-header">
                 <label for="carbs">Carbs</label>
             </div>
             <div class="form-group-body">
-                <input class="form-control" step="0.01" name="carbs" type="number" id="carbs" />
+                <input class="form-control" value="<%= food.carbs %>" step="0.01" name="carbs" type="number" id="carbs" />
             </div>
 
             <div class="form-group-header">
                 <label for="fats">Fats</label>
             </div>
             <div class="form-group-body">
-                <input class="form-control" step="0.01" name="fats" type="number" id="fats" />
+                <input class="form-control" value="<%= food.fats %>" step="0.01" name="fats" type="number" id="fats" />
             </div>
         
             <div class="form-group-header">
                 <label for="proteins">Protein</label>
             </div>
             <div class="form-group-body">
-                <input class="form-control" step="0.01" name="proteins" type="number" id="proteins" />
+                <input class="form-control" value="<%= food.proteins %>" step="0.01" name="proteins" type="number" id="proteins" />
             </div>
             </div>
 
@@ -71,7 +71,7 @@
                 <label for="salt">Salt</label>
               </div>
               <div class="form-group-body">
-                <input class="form-control" step="0.01" name="salt" type="number" id="salt" />
+                <input class="form-control" value="<%= food.salt %>" step="0.01" name="salt" type="number" id="salt" />
               </div>
             </div>
 
@@ -79,14 +79,13 @@
                 <label for="sugar">Sugar</label>
               </div>
               <div class="form-group-body">
-                <input class="form-control" step="0.01" name="sugar" type="number" id="sugar" />
+                <input class="form-control" value="<%= food.sugar %>" step="0.01" name="sugar" type="number" id="sugar" />
               </div>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Add to Database</button>
-                <!-- TODO: Clear the form fields on click -->
-                <button type="button" class="btn">Clear</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a type="button" href="/foods" class="btn">Cancel</a>
             </div>
         </form>          
     </body>

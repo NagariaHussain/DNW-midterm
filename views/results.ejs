@@ -1,16 +1,21 @@
+<!-- Page to show search results -->
 <!DOCTYPE html>
 <html lang="en">
 <%- include('head', {title: "Search results"}); -%>
 <body>
     <%- include('header'); -%>
     <div class="Subhead m-5">
+        <!-- Display information about the search query -->
         <div class="Subhead-heading">Showing results for "<%= queryString %>"</div>
         <div class="Subhead-description"><%= foods.length %> matches found</div>
     </div>
     <div class="markdown-body py-1 px-5">  
-        <% if(foods.length > 0) {%>
+        <!-- If there is at least one row -->
+        <% if(foods.length > 0) { %>
+        <!-- Display a table containing the values -->
         <table>
             <thead>
+                <!-- Column names -->
                 <tr>
                   <th>Name</th>
                   <th>Typical Values Per</th>
@@ -23,6 +28,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Render a row for each array item -->
                 <% foods.forEach(function(food){ %>
                 <tr>
                   <td><%= food.name %></td>
@@ -37,6 +43,8 @@
                 <% }); %>
             </tbody>
         </table>
+        <!-- If 0 results are found -->
+        <!-- Display a message to the user -->
         <% } else { %>
             <h1>No results found</h1>
         <% } %>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('head', {title: "All foods"}); -%>
+<%- include('head', {title: "All foods" }); -%>
     <style>
         tbody tr:hover {
             background-color: aquamarine !important;
@@ -10,95 +10,214 @@
         .selected {
             background-color: rgb(0, 206, 137) !important;
         }
-    </style>
-    <body>
-        <%- include('header'); -%>
-        <div class="Subhead m-5">
-            <div class="Subhead-heading">All Food items in our database</div>
-            <div class="Subhead-description">Select items to calculate calories</div>
-        </div>
-        <div class="markdown-body py-1 px-5" id="list-table">          
-            <table>
-                <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Typical Values Per</th>
-                      <th>Calories</th>
-                      <th>Carbs</th>
-                      <th>Fats</th>
-                      <th>Proteins</th>
-                      <th>Salt</th>
-                      <th>Sugar</th>
-                    </tr>
-                </thead>
-                <tbody id="foodTable">
-                    <% foods.forEach(function(food){ %>
-                    <tr @click="addToList" >
-                      <td><%= food.name %></td>
-                      <td><%= food.typical_values_per %> <%= food.unit_of_tvp %></td>
-                      <td><%= food.calories %></td>
-                      <td><%= food.carbs %></td>
-                      <td><%= food.fats %></td>
-                      <td><%= food.proteins %></td>
-                      <td><%= food.salt %></td>
-                      <td><%= food.sugar %></td>
-                    </tr>
-                    <% }); %>
-                </tbody>
-            </table>
 
-            <div class="mt-3">
-                <p>
-                    Selected foods for calculation: 
-                    <span class="Counter ml-1">
-                        {{selected.length}}
-                    </span>
-                    <button class="ml-2 btn" @click="clearList">Clear</button>
-                </p>
-                <table v-if="selected.length > 0">
-                    <thead>
-                        <tr>
-                            <th>Food</th>
-                            <th>Qty</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="food of selected">
-                            <td> {{food}} </td>
-                            <td>
-                                <input type="number" step="0.01" class="form-control" :id="food" value="1" @change="qtyChange">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity .5s ease;
+        }
+
+        .fade-enter-from,
+        .fade-leave-to {
+            opacity: 0;
+        }
+
+        #modal {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 100;
+            background-color: rgba(187, 187, 187, 0.575);
+        }
+
+        #modal details-dialog {
+            width: 70%;
+            margin-top: 50px;
+            margin-left: 15%;
+        }
+    </style>
+
+    <body>
+
+        <div id="app">
+
+            <div v-if="modalOpen" id="modal" class="details-reset details-overlay details-overlay-dark">
+                <details-dialog class="Box Box--overlay d-flex flex-column anim-fade-in fast">
+                    <div class="Box-header">
+                        <button  @click="modalOpen = !modalOpen" class="Box-btn-octicon btn-octicon float-right" type="button" aria-label="Close dialog"
+                            data-close-dialog>
+                            <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16"
+                                aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z">
+                                </path>
+                            </svg>
+                        </button>
+                        <h3 class="Box-title">Are you sure?</h3>
+                    </div>
+                    <div class="overflow-auto">
+                        <div class="Box-body overflow-auto">
+                            <p>
+                                This is an irreversible operation and will delete all the data related to this food
+                                item.
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="Box-footer">
+                        <button type="button" @click.stop="deleteFood" class="btn btn-danger">Yes, Delete</button>
+                        <button class="ml-2 btn btn-outline" @click="modalOpen = !modalOpen">No, Cancel</button>
+                    </div>
+                </details-dialog>
             </div>
+            <%- include('header'); -%>
+                <div class="Subhead m-5">
+                    <div class="Subhead-heading">All Food items in our database</div>
+                    <div class="Subhead-description">Select items to calculate calories</div>
+                    <% if(flashMessage) { %>
+                        <transition name="fade">
+                            <div v-if="flashShown" class="flash mt-3 flash-success">
+                                <%= flashMessage %>
+                                    <button class="flash-close ml-2" @click="flashShown = !flashShown" type="button"
+                                        aria-label="Close">
+                                        <svg class="octicon octicon-x" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 16 16" width="16" height="16">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                            </div>
+                        </transition>
+                        <% } %>
+                </div>
+                <div class="markdown-body py-1 px-5">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Typical Values Per</th>
+                                <th>Calories</th>
+                                <th>Carbs</th>
+                                <th>Fats</th>
+                                <th>Proteins</th>
+                                <th>Salt</th>
+                                <th>Sugar</th>
+                                <th>UPDATE</th>
+                                <th>DELETE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="foodTable">
+                            <% foods.forEach(function(food){ %>
+                                <tr @click="addToList">
+                                    <td>
+                                        <%= food.name %>
+                                    </td>
+                                    <td>
+                                        <%= food.typical_values_per %>
+                                            <%= food.unit_of_tvp %>
+                                    </td>
+                                    <td>
+                                        <%= food.calories %>
+                                    </td>
+                                    <td>
+                                        <%= food.carbs %>
+                                    </td>
+                                    <td>
+                                        <%= food.fats %>
+                                    </td>
+                                    <td>
+                                        <%= food.proteins %>
+                                    </td>
+                                    <td>
+                                        <%= food.salt %>
+                                    </td>
+                                    <td>
+                                        <%= food.sugar %>
+                                    </td>
+                                    <td>
+                                        <a href="/update/<%= food.name %>" @click.stop="updateFood"
+                                            class="btn btn-outline" type="button" aria-label="Pencil icon">
+                                            <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                                                width="16" height="16">
+                                                <path fill-rule="evenodd"
+                                                    d="M11.013 1.427a1.75 1.75 0 012.474 0l1.086 1.086a1.75 1.75 0 010 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 01-.927-.928l.929-3.25a1.75 1.75 0 01.445-.758l8.61-8.61zm1.414 1.06a.25.25 0 00-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 000-.354l-1.086-1.086zM11.189 6.25L9.75 4.81l-6.286 6.287a.25.25 0 00-.064.108l-.558 1.953 1.953-.558a.249.249 0 00.108-.064l6.286-6.286z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button @click.stop="modalOpen = true" class="btn btn-danger mr-2" type="button">
+                                            <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                                                width="16" height="16">
+                                                <path fill-rule="evenodd"
+                                                    d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-3">
+                        <p>
+                            Selected foods for calculation:
+                            <span class="Counter ml-1">
+                                {{selected.length}}
+                            </span>
+                            <button class="ml-2 btn" @click="clearList">Clear</button>
+                        </p>
+                        <table v-if="selected.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>Food</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="food of selected">
+                                    <td> {{food}} </td>
+                                    <td>
+                                        <input type="number" step="0.01" class="form-control" :id="food" value="1"
+                                            @change="qtyChange">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
         </div>
         <!-- VueJS 3 JavaScript Library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js" integrity="sha512-M8VjsuCj1iBzrwKloFNjvQBmFXT2oF0MWExoLGpQT2nEx5tq7CP+BhWGJdczT1LoWAhyqHh+LJ6ihHSVGyclHw==" crossorigin="anonymous"></script>
-        <script>  
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.prod.js"
+            integrity="sha512-M8VjsuCj1iBzrwKloFNjvQBmFXT2oF0MWExoLGpQT2nEx5tq7CP+BhWGJdczT1LoWAhyqHh+LJ6ihHSVGyclHw=="
+            crossorigin="anonymous"></script>
+        <script>
             const app = Vue.createApp({
                 data() {
                     return {
-                        selected: []
+                        selected: [],
+                        flashShown: true,
+                        modalOpen: false
                     }
                 },
                 methods: {
                     addToList(e) {
                         const foodName = e.target.parentNode.children[0].innerText;
-                        if(!this.selected.includes(foodName)) {
+                        if (!this.selected.includes(foodName)) {
                             this.selected.push(
                                 foodName
                             );
                             e.target.parentNode.classList.add("selected");
                         } else {
-                            for(let i = 0; i < this.selected.length; i++) {    
-                                if ( this.selected[i] === foodName) { 
-                                    this.selected.splice(i, 1); 
+                            for (let i = 0; i < this.selected.length; i++) {
+                                if (this.selected[i] === foodName) {
+                                    this.selected.splice(i, 1);
                                 }
                             }
                             e.target.parentNode.classList.remove("selected");
                         }
-                    }, 
+                    },
                     qtyChange(e) {
                         console.log("qty changed!");
                     },
@@ -107,11 +226,18 @@
                         for (let child of document.getElementById("foodTable").children) {
                             child.classList.remove("selected");
                         }
+                    },
+                    updateFood() {
+                        console.log("updated");
+                    },
+                    deleteFood() {
+                        console.log("deleted");
                     }
                 }
             });
 
-            const mountedApp = app.mount('#list-table');
+            const mountedApp = app.mount('#app');
         </script>
     </body>
+
 </html>

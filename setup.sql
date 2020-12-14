@@ -1,4 +1,4 @@
--- CREATE DATABASE food_db;
+CREATE DATABASE food_db;
 
 CREATE TABLE IF NOT EXISTS foods(
 	name VARCHAR(255) PRIMARY KEY,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS foods(
     sugar NUMERIC(6, 2) DEFAULT 0
 );
 
--- INSERT INTO foods VALUES ("flour", 100, "gram", 381, 81, 1.4, 9.1, 0.01, 0.6);
+INSERT INTO foods VALUES ("flour", 100, "gram", 381, 81, 1.4, 9.1, 0.01, 0.6);
 
 INSERT INTO foods VALUES ("apple", 1, "kilogram", 0.1, 0.2, 1.90, 10, 50.5, 9.8);
 
