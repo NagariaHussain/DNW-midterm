@@ -64,8 +64,8 @@
 
                     </div>
                     <div class="Box-footer">
-                        <button type="button" @click.stop="deleteFood" class="btn btn-danger">Yes, Delete</button>
-                        <button class="ml-2 btn btn-outline" @click="modalOpen = !modalOpen">No, Cancel</button>
+                        <a type="button" :href="currentDelete" class="btn btn-danger">Yes, Delete</a>
+                        <button class="ml-2 btn btn-outline" @click="modalOpen = false">No, Cancel</button>
                     </div>
                 </details-dialog>
             </div>
@@ -146,7 +146,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <button @click.stop="modalOpen = true" class="btn btn-danger mr-2" type="button">
+                                        <button @click.stop="deleteFood('<%= food.name %>')" class="btn btn-danger mr-2" type="button">
                                             <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
                                                 width="16" height="16">
                                                 <path fill-rule="evenodd"
@@ -198,7 +198,8 @@
                     return {
                         selected: [],
                         flashShown: true,
-                        modalOpen: false
+                        modalOpen: false,
+                        currentDelete: "/delete"
                     }
                 },
                 methods: {
@@ -230,8 +231,9 @@
                     updateFood() {
                         console.log("updated");
                     },
-                    deleteFood() {
-                        console.log("deleted");
+                    deleteFood(food) {
+                        this.modalOpen = true;
+                        this.currentDelete = "/delete/" + food;
                     }
                 }
             });
