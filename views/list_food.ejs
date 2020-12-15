@@ -168,23 +168,26 @@
                             </span>
                             <button class="ml-2 btn" @click="clearList">Clear</button>
                         </p>
-                        <table v-if="selected.length > 0">
-                            <thead>
-                                <tr>
-                                    <th>Food</th>
-                                    <th>Qty</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="food of selected">
-                                    <td> {{food}} </td>
-                                    <td>
-                                        <input type="number" step="0.01" class="form-control" :id="food" value="1"
-                                            @change="qtyChange">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <form action="/calculate" method="GET">
+                            <table v-if="selected.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th>Food</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="food of selected">
+                                        <td> {{food}} </td>
+                                        <td>
+                                            <input required type="number" step="0.01" class="form-control" :name="food" :id="food" value="1"
+                                                @change="qtyChange">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="submit" value="Calculate" class="btn btn-outline">
+                        </form>
                     </div>
                 </div>
         </div>

@@ -12,6 +12,28 @@ function convertToArray(reqBody) {
         parseFloat(reqBody.sugar)
     ];
 }
+
+// To calculate total nutritional information
+function getCalculatedResults(results, selected_foods) {
+    let calculated = {
+        calories: 0,
+        carbs: 0,
+        fats: 0,
+        proteins: 0,
+        salt: 0,
+        sugar: 0
+    };
+
+    for (let i = 0; i < results.length; i++) {
+        let current_food = results[i];
+
+        for (let nutrition in calculated) {
+            calculated[nutrition] += (selected_foods.get(current_food["name"]) * current_food[nutrition]);
+        }
+    }
+
+    return calculated;
+}
 // Export function to handle routing
 module.exports = function(app) {
     // Index route
@@ -94,7 +116,7 @@ module.exports = function(app) {
     app.get('/foods', (req, res) => {
         // Select all foods with 
         // all columns from the database
-        const sql_command = "SELECT * FROM foods";
+        const sql_command = "SELECT * FROM foods ORDER BY name";
 
         // Query the database
         db.query(sql_command, (err, foods) => {
@@ -157,6 +179,45 @@ module.exports = function(app) {
             }
 
             return res.redirect("/foods");
+        });
+    });
+
+
+    app.get("/calculate", (req, res) => {
+        // To store name and qty of food items for calculation
+        const selected_foods = new Map();
+
+        // To store the name of all the selected
+        // food items 
+        const selected_food_names = [];
+
+        // Store name and quantity of selected food items 
+        // as an object in an Array
+        for (let food of Object.keys(req.query)) {
+            // Add `food`, `qty` key-value pair to the map
+            selected_foods.set(food, parseInt(req.query[food]));
+            selected_food_names.push(food);
+        }
+
+        console.log(selected_foods);
+
+        // SQL query to get the rows for selected food items
+        const sql_query = "SELECT * FROM foods WHERE name IN (?)";
+
+
+        // Execute the query
+        db.query(sql_query, [selected_food_names], (err, results) => {
+            // If some error occurs
+            if (err) {
+                console.log(err);
+                return res.status(500).send("Something went wrong!");
+            }
+            
+            // Perform calculation
+            const total = getCalculatedResults(results, selected_foods);
+
+            // Return a HTML Report with the calculated data
+            return res.render("report", {report: total, unit: results[0].unit_of_tvp});
         });
     });
 

@@ -1,0 +1,41 @@
+<!-- Page to show calculation results -->
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head', {title: "Calculation results"}); -%>
+<body>
+    <%- include('header'); -%>
+    <div class="Subhead m-5">
+        <!-- Display information about the search query -->
+        <div class="Subhead-heading">Nutritional Information and calorie count of a recipe</div>
+        <div class="Subhead-description">or a meal</div>
+    </div>
+    <div class="markdown-body py-1 px-5">  
+        <!-- Display a table containing the values -->
+        <table>
+            <thead>
+                <!-- Column names -->
+                <tr>
+                  <th>Calories</th>
+                  <th>Carbs</th>
+                  <th>Fats</th>
+                  <th>Proteins</th>
+                  <th>Salt</th>
+                  <th>Sugar</th>
+                  <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td><%= report.calories %></td>
+                  <td><%= report.carbs %></td>
+                  <td><%= report.fats %></td>
+                  <td><%= report.proteins %></td>
+                  <td><%= report.salt %></td>
+                  <td><%= report.sugar %></td>
+                  <td><%= unit %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
