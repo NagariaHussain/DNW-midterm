@@ -39,6 +39,9 @@ app.set("views", __dirname + "/views");
 // Setting up ejs as the view engine
 app.set("view engine", "ejs");
 
+// For handling flash messages
+app.set('message', null);
+
 // Middleware functions
 // For parsing request body
 app.use(bodyParser.urlencoded({ extended: true }));

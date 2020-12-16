@@ -63,7 +63,7 @@ module.exports = function(app) {
 
             // No errors
             // redirect the user to list page
-            // TODO: Show a success message (using a success page maybe?)
+            req.app.set('message', `"${food_data[0]}" successfully added to database`);
             return res.redirect("/foods");
         });
     });
@@ -114,6 +114,11 @@ module.exports = function(app) {
     // Returns a page containing a list of 
     // all the food items in the database
     app.get('/foods', (req, res) => {
+        const flashMessage = req.app.get('message');
+
+        // Remove any flash messages
+        req.app.set('message', null);
+
         // Select all foods with 
         // all columns from the database
         const sql_command = "SELECT * FROM foods ORDER BY name";
@@ -129,7 +134,7 @@ module.exports = function(app) {
             // Everything went well
             // Render food list page with the data
             // from the database
-            return res.render("list_food", {foods: foods, flashMessage: null});
+            return res.render("list_food", {foods, flashMessage});
         });
     }); 
 
@@ -142,7 +147,7 @@ module.exports = function(app) {
             if (err) {
                 res.status(500).send("Something went wrong!");
             }
-            console.log(foodItem[0]);
+
             return res.render("update_food", {food: foodItem[0]});
         });
     });
@@ -163,6 +168,8 @@ module.exports = function(app) {
                 return res.status(500).send("Something went wrong while updating db.");
             }
 
+            // To show a flash message
+            req.app.set('message', `"${food_name}" updated successfully`);
             return res.redirect("/foods");
         });
     });
@@ -171,13 +178,13 @@ module.exports = function(app) {
         const food_name = req.params.name;
         const sql_query = "DELETE FROM foods WHERE name = ?";
 
-
         db.query(sql_query, [food_name], (err) => {
             if (err) {
                 console.log(err);
                 return res.status(500).send("Something went wrong while deleting record from database");
             }
-
+            
+            req.app.set('message', `"${food_name}" successfully deleted`);
             return res.redirect("/foods");
         });
     });
