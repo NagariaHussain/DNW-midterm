@@ -1,7 +1,7 @@
 // Module imports
-const express = require("express");
-const bodyParser = require("body-parser");
-const mysql = require("mysql");
+const express = require("express"); // Express Server
+const bodyParser = require("body-parser"); // For parsing POST form data
+const mysql = require("mysql"); // MySQL Driver
 
 // Create instance of express app
 const app = express();
@@ -24,7 +24,7 @@ db.connect((err) => {
     if (err) {
         // Log the error
         console.log(err);
-        // Stop the node process
+        // Stop the current node process
         process.exit(1);
     }
 });
@@ -43,14 +43,14 @@ app.set("view engine", "ejs");
 app.set('message', null);
 
 // Middleware functions
-// For parsing request body
+// For parsing POST request body
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handling routes
 require("./routes/main")(app);
 
-
 // Starting the web server
+// and listening on port `PORT`
 app.listen(
     PORT, 
     () => console.log(`CalorieBuddy app listening on port ${PORT}!`)
