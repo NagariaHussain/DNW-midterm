@@ -90,7 +90,7 @@ module.exports = function(app) {
         // suitable to pass to mysql driver
         const food_data = convertToArray(req.body);
 
-        // Query the database with data and statment
+        // Query the database with data and statement
         db.query(insert_statement, food_data, (err) => {
             // If an error occurs
             if (err) {
