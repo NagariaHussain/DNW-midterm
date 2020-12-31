@@ -187,6 +187,22 @@ module.exports = function(app) {
     }); 
 
 
+    // GET /update
+    // returns a page with a search food form
+    app.get("/update", (req, res) => {
+        return res.render("update");
+    });
+
+    // GET /update_food
+    // returns a page with a search food form
+    app.get("/update_food", (req, res) => {
+        // Access the name of the food 
+        const food_name = req.query.keyword;
+
+        // Redirect to update food with the given food_name
+        return res.redirect(`/update/${food_name}`);
+    });
+
     // GET /update/:name
     // returns a page containing all the data about the
     // food having the `name` in a prepopulated form

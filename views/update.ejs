@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('head', {title: "Search Food"}); -%>
+    <%- include('head', {title: "Search food for Update"}); -%>
     <style>
         .search-form {
             display: grid;
@@ -20,12 +20,12 @@
     <body>
         <%- include('header'); -%>
         <div class="Subhead m-5">
-            <div class="Subhead-heading">Search for food items</div>
-            <div class="Subhead-description">Enter the name of food item to start searching.</div>
+            <div class="Subhead-heading">Search to update a food item</div>
+            <div class="Subhead-description">Enter the name of food item to update.</div>
         </div>
-        <form class="search-form" method="GET" action="/search_db">
+        <form class="search-form" method="GET" action="/update_food">
             <div class="p-5">
-                <input name="keyword" class="form-control search-box" type="text" aria-label="Search" placeholder="Enter food name to search in database">
+                <input name="keyword" class="form-control search-box" type="text" aria-label="Search" placeholder="Enter food name to update">
                 <input class="btn btn-primary btn-large ml-2" type="submit" value="Search">
             </div>
         </form>

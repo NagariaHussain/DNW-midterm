@@ -77,7 +77,39 @@ If some error occurs while performing the insert operation, the status code of t
 
 ## R4: Search Food Page
 
-...
+This page displays a single form feild to enter the search query (food name). This page can be accessed either by going to the `'/search'` route (or equivalently sending a `GET` request to this endpoint) or by clicking 
+`Search` from the navbar. (R4A)
+
+When the user enters a search string and clicks on the search button, a `GET` request is sent to the server along with the search query string to the endpoint '`/search_db`'. 
+
+On the server side, the query string is accessed using the `request.query`
+object and a search is performed using the following SQL query:
+
+```javascript
+// SQL command to select all columns for rows 
+// whose name column matches the given search keyword
+const sql_command = "SELECT * FROM foods WHERE name REGEXP ?";
+```
+
+Since, we want to match any food name that contains the search string (partially or completely), I have used the `REGEXP` operator available on MySQL to perform a regular expression match on the `name` column. (R4C)
+
+After fetching the results using the `mysql` driver, the results and the query string are passed to the render method along with the template name (template is `views/results.ejs` in this case), which renders the results:
+
+```html
+<!-- If there is at least one row -->
+<% if(foods.length > 0) { %>
+    <!-- Display a table containing the values -->
+<% } else { %>
+    <!-- If 0 results are found -->
+    <!-- Display a message to the user -->
+    <h1>No results found</h1>
+<% } %>
+```
+
+If the length of the results list is greater than 0, a table containing the data for search results is displayed, otherwise a message (No results found) is displayed to the user. (R4B)
+
+## R5: Update food page
+
 
 # Database Schema
 
