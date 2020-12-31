@@ -110,7 +110,35 @@ If the length of the results list is greater than 0, a table containing the data
 
 ## R5: Update food page
 
+Clicking on the `Update` button on the navbar or going to the '`/update`' route, renders a search form ('`views/update.ejs`'). The search keyword is sent to the server using `GET` method at '`/update_food`' endpoint. (R5A)
 
+On the server side (at the '`/update_food`' endpoint), the query string is extracted and the user is redirected to '`/update/:name`' route to handle rendering of the update form for the food with the given search string. This route does the following:
+
+1. Extracts the query param from the URL. (`:name`)
+
+2. Executes a SQL query against the database to get the data for the food item with the given `name`.
+
+3. If no food item is found, a message is set and the user is redirected to the lists page where the *message is displayed* (more details about this in [R6](#r6-list-foods-page)):
+
+    ```javascript
+    // If no food item was found with the given name
+    if (foodItem.length == 0) {
+        // Set a flash message
+        req.app.set('message', `"${food_name}" not found!`);
+        // redirect the user to list page
+        return res.redirect("/foods");
+    }
+    ```
+
+4. If a food item is found with the given name the '`views/update_food.ejs`' template is rendered with the data from the database. This template renders the exact from as the add food page but it is **pre-populated** with the data for the given food item.
+
+The form gets submitted to `/update/:name` (where `:name` is the name of the food currently being updated) via a `POST` request.
+
+On the server side, the SQL UPDATE command is used to **update the record associated with the given food item**. After, the update operation is successfully completed, the user is redirected to the lists page and a *message is displayed about the completion of the operation*. (R5B)
+
+
+
+## R6: List Foods Page
 # Database Schema
 
 ## Creating of Database

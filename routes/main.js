@@ -194,7 +194,8 @@ module.exports = function(app) {
     });
 
     // GET /update_food
-    // returns a page with a search food form
+    // redirect to `/update/:name` to render 
+    // the update page
     app.get("/update_food", (req, res) => {
         // Access the name of the food 
         const food_name = req.query.keyword;
