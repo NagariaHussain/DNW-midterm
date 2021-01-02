@@ -136,9 +136,46 @@ The form gets submitted to `/update/:name` (where `:name` is the name of the foo
 
 On the server side, the SQL UPDATE command is used to **update the record associated with the given food item**. After, the update operation is successfully completed, the user is redirected to the lists page and a *message is displayed about the completion of the operation*. (R5B)
 
+On the update food item form page, there is also a `Delete` button which lets the user *delete a food item from the database*. As mentioned in the requirements (R5C), when the user clicks the button, a modal window is shown **asking for user confirmation** (VueJS is used to add conditional rendering of the modal window with some custom CSS styling). If the user proceeds with the deletion, a GET request is sent to the server at the end point '`/delete/:name`' where `:name` is the name of the food item to delete.
+On the back-end, a SQL DELETE statement is executed and upon successful deletion, the user is redirected to the lists page with a *flash message*. (R5C)
 
+![Delete Confirmation](./report/confirm_delete.png)
 
 ## R6: List Foods Page
+
+In my opinion, this is the most complex page with respect to the front end. I have used VueJS extensively in order to make it interactive.
+
+This page can be accessed by clicking the `All Foods` or by going to the '`/foods`' route. This page displays all the food items in the database and all the data available for them, sorted by food name. (R6A)
+
+As with other pages, this page also has a navbar for making
+navigation easier. (R6B)
+
+As seen in the previous requirements, the client is redirected to the lists page after a successfull operation from Create, Update or Delete. Hence, this route also handles the displaying of flash messages:
+
+![List Page](./report/list_page.png)
+
+The flash message is removed, once it has been displayed:
+
+```javascript
+// Get any flash messages if any
+const flashMessage = req.app.get('message');
+
+// Remove any flash messages
+req.app.set('message', null);
+```
+
+The user can also go to the update page for a particular food item by clicking the pencil icon or delete an item by clicking the trash can icon.
+
+The users can click on a particular item to add it (click again to de-select) to the recipe calculation (maintained using VueJS data). Once the user selects a food item for calculation, a form field appears with the name of the selected item to enter the quantity of this particular food item in the recipe.
+
+Once the user clicks the `Calculate` button, the selected food items along with the respective quantities are sent to the server for calculation.
+
+![List Page](./report/list_page_calc.png)
+
+The calculation is done at the '`/calculate`' route. After, the calculation has been done, the results of the calculation are rendered (`/views/report.ejs`) using the calculation data (R6C):
+
+![List Page](./report/report_page.png)
+
 # Database Schema
 
 ## Creating of Database
