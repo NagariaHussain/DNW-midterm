@@ -2,7 +2,10 @@
 
 # Introduction
 
-I started off by setting up the database by analysing the given requirements. I created the `foods` table and also inserted some sample data in order to test it. The SQL queries for creating the database and table schema can be found in the [Database Schema](#database-schema) section and also in the `setup.sql` file in the source code directory. I have used the open source [Primer CSS](https://primer.style/css/) framework by GitHub for styling my web pages and [VueJS](https://v3.vuejs.org/), an open source JavaScript framework to add interactivity to the food lists page. More information on how the requirements are satisfied is provided in the section that follows.
+I started off by setting up the database by analysing the given requirements. I created the `foods` table and also inserted some sample data in order to test it. The SQL queries for creating the database and table schema can be found in the [Database Schema](#database-schema) section and also in the `setup.sql` file in the source code directory. I have used the open source [Primer CSS](https://primer.style/css/)[^1] framework by GitHub for styling my web pages and [VueJS](https://v3.vuejs.org/)[^2], an open source JavaScript framework to add interactivity to the food lists page. More information on how the requirements are satisfied is provided in the section that follows.
+
+[^1]: 2020, Github Open Source, https://primer.style/css/
+[^2]: 2020, Vuejs.org Open Source, https://v3.vuejs.org/
 
 # Requirements
 
@@ -18,14 +21,14 @@ I have added a home page that is rendered (`view/index.ejs`) when the user goes 
 
 2. A [blankstate](https://primer.style/css/components/blankslate) prompting the user to start using the application by adding a new food to the database.
 
-![Image](./report/home_page.png)
+![Home Page Screenshot](./report/home_page.png)
 
 
 ## R2: About Page
 
 This page can be accessed by visiting the '`/about`' route. The `about.ejs` template gets rendered on recieving a `GET` request at this route.
 
- (R2A) This page shows a small summary of the web application's purpose, my name as a developer and the stack of technologies used (using some colorful span backgrounds). Also, there is a navigation bar with links to all other pages.
+ (`R2A`) This page shows a small summary of the web application's purpose, my name as a developer and the stack of technologies used (using some colorful span backgrounds). Also, there is a navigation bar with links to all other pages.
 
 ## R3: Add Food Page
 
@@ -43,7 +46,7 @@ This page contains a form with the following feilds to add a food item to the da
 
 There are two buttons: one to add the item to the database (`Add to Database`) and a second button (`clear`) to clear all the form feilds.
 
-This page (rendered using the '`views/add_food.ejs`' template) can be accessed either by clicking the '`Add`' link in the navbar or by sending a `GET` request to the '`/add`' route. A navibar is present to let the user navigate the site easily. (R3A)
+This page (rendered using the '`views/add_food.ejs`' template) can be accessed either by clicking the '`Add`' link in the navbar or by sending a `GET` request to the '`/add`' route. A navigation bar is present to let the user navigate the site easily. (R3A)
 
 Once the user clicks the `Add to Database` button (or in other words, submits the form), the form data is sent to the server via a `POST` request to '`/add`' route.
 
@@ -77,8 +80,7 @@ If some error occurs while performing the insert operation, the status code of t
 
 ## R4: Search Food Page
 
-This page displays a single form feild to enter the search query (food name). This page can be accessed either by going to the `'/search'` route (or equivalently sending a `GET` request to this endpoint) or by clicking 
-`Search` from the navbar. (R4A)
+This page displays a single form feild to enter the search query (food name). This page can be accessed either by going to the `'/search'` route (or equivalently sending a `GET` request to this endpoint) or by clicking `Search` from the navbar. (R4A)
 
 When the user enters a search string and clicks on the search button, a `GET` request is sent to the server along with the search query string to the endpoint '`/search_db`'. 
 
@@ -134,12 +136,12 @@ On the server side (at the '`/update_food`' endpoint), the query string is extra
 
 The form gets submitted to `/update/:name` (where `:name` is the name of the food currently being updated) via a `POST` request.
 
-On the server side, the SQL UPDATE command is used to **update the record associated with the given food item**. After, the update operation is successfully completed, the user is redirected to the lists page and a *message is displayed about the completion of the operation*. (R5B)
+On the server side, the SQL UPDATE command is used to **update the record associated with the given food item**. After the update operation is successfully completed, the user is redirected to the lists page and a *message is displayed about the completion of the operation*. (R5B)
 
 On the update food item form page, there is also a `Delete` button which lets the user *delete a food item from the database*. As mentioned in the requirements (R5C), when the user clicks the button, a modal window is shown **asking for user confirmation** (VueJS is used to add conditional rendering of the modal window with some custom CSS styling). If the user proceeds with the deletion, a GET request is sent to the server at the end point '`/delete/:name`' where `:name` is the name of the food item to delete.
 On the back-end, a SQL DELETE statement is executed and upon successful deletion, the user is redirected to the lists page with a *flash message*. (R5C)
 
-![Delete Confirmation](./report/confirm_delete.png)
+![Delete Confirmation Prompt](./report/confirm_delete.png)
 
 ## R6: List Foods Page
 
@@ -152,7 +154,7 @@ navigation easier. (R6B)
 
 As seen in the previous requirements, the client is redirected to the lists page after a successfull operation from Create, Update or Delete. Hence, this route also handles the displaying of flash messages:
 
-![List Page](./report/list_page.png)
+![List Food Page](./report/list_page.png)
 
 The flash message is removed, once it has been displayed:
 
@@ -170,11 +172,11 @@ The users can click on a particular item to add it (click again to de-select) to
 
 Once the user clicks the `Calculate` button, the selected food items along with the respective quantities are sent to the server for calculation.
 
-![List Page](./report/list_page_calc.png)
+![Selecting items for calculation](./report/list_page_calc.png)
 
 The calculation is done at the '`/calculate`' route. After, the calculation has been done, the results of the calculation are rendered (`/views/report.ejs`) using the calculation data (R6C):
 
-![List Page](./report/report_page.png)
+![Results of calculation](./report/report_page.png)
 
 # Database Schema
 
