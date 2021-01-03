@@ -85,9 +85,28 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Add to Database</button>
-                <!-- TODO: Clear the form fields on click -->
-                <button type="button" class="btn">Clear</button>
+                <button type="button" class="btn" id="clearButton">Clear</button>
             </div>
         </form>          
+        <script>
+          // --------------------------
+          // CLEAR BUTTON FUNCTIONALITY
+          // --------------------------
+          
+          // Get the clear button element
+          const clearButton = document.getElementById("clearButton");
+
+          // Add click event listener
+          clearButton.addEventListener('click', () => {
+            // Get all the input elements
+            const inputs = document.getElementsByClassName("form-control");
+
+            // Iterate through each input elements
+            for (let input of inputs) {
+              // Clear its value
+              input.value = "";
+            }
+          });
+        </script>
     </body>
 </html>
