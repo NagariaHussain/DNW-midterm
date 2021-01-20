@@ -46,6 +46,21 @@ This page contains a form with the following feilds to add a food item to the da
 
 There are two buttons: one to add the item to the database (`Add to Database`) and a second button (`clear`) to clear all the form feilds.
 
+I have used a little DOM manipulation to implement the `clear` button:
+
+```javascript
+clearButton.addEventListener('click', () => {
+    // Get all the input elements
+    const inputs = document.getElementsByClassName("form-control");
+
+    // Iterate through each input elements
+    for (let input of inputs) {
+        // Clear its value
+        input.value = "";
+    }
+});
+```
+
 This page (rendered using the '`views/add_food.ejs`' template) can be accessed either by clicking the '`Add`' link in the navbar or by sending a `GET` request to the '`/add`' route. A navigation bar is present to let the user navigate the site easily. (R3A)
 
 Once the user clicks the `Add to Database` button (or in other words, submits the form), the form data is sent to the server via a `POST` request to '`/add`' route.
